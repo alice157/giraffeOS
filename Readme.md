@@ -1,6 +1,6 @@
 # GiraffeOS
 ## An Experimental Microkernal in C
-### Current Status: `It boots, and has a rudimentary vga text-mode driver`
+Current Status: `It boots, and has a rudimentary vga text-mode driver`
 
 GiraffeOS is currently under heavy development, and is currently not ready for 
 general use (not that it's intended to be!).
