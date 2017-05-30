@@ -54,7 +54,7 @@ _start:
 	# To set up a stack, we set the esp register to point to the top of our
 	# stack (as it grows downwards on x86 systems). This is necessarily done
 	# in assembly as languages such as C cannot function without a stack.
-	mov $stack_top, %esp
+	mov esp, stack_top
 
 	# This is a good place to initialize crucial processor state before the
 	# high-level kernel is entered. It's best to minimize the early

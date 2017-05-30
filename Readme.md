@@ -8,6 +8,7 @@ general use (not that it's intended to be!).
 Todo:
 - [x] Make it boot
 - [x] Basic VGA text support
+- [ ] Giraffe ASCII art on boot
 - [ ] Paging
 - [ ] Switch to NASM
 - [ ] Improve build tooling to make it easier to include assembly

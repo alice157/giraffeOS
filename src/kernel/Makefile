@@ -7,6 +7,7 @@ LD = i686-elf-gcc
 AS = i686-elf-as
 LFLAGS = -ffreestanding -O2 -nostdlib -Wall -Wextra
 CFLAGS = -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+AS
 INCLUDES = -I include
 LIBS = -lgcc
 

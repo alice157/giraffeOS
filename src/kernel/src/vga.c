@@ -18,6 +18,7 @@ void kvga_write_string(uint8_t * string)
 			case '\n':
 				kvga_advance_cursor(kvga_newline());
 				break;
+			case '\t':
 			default:
 				kvga_buffer[VGA_LOCATION] = kvga_entry(string[i], kvga_current_color);
 				kvga_advance_cursor(1);
@@ -104,4 +105,12 @@ uint16_t kvga_newline(void)
 	} while ((kvga_cursor_x + advancement) % VGA_WIDTH);
 	kvga_cursor_y = 0;
 	return advancement;
+}
+
+uint16_t kvga_tab(void)
+{
+	uint16_t spaces = 4 - (kvga_cursor_x % 4);
+	for (int i = 0; i < spaces; i++)
+		kvga_buffer[VGA_LOCATION + i] = kvga_entry(' ' , kvga_current_color);
+	return spaces;
 }
