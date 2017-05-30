@@ -1,0 +1,38 @@
+BUILD_DIR = build
+SOURCE_DIR = src
+EXECUTABLE = giraffeOS.bin
+ISO_STAGING = dist
+ISO = giraffeOS.iso
+CC = i686-elf-gcc
+LD = i686-elf-gcc
+AS = i686-elf-as
+LFLAGS = -ffreestanding -O2 -nostdlib -Wall -Wextra
+CFLAGS = -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+INCLUDES = include
+LIBS = -lgcc
+
+.PHONY: clean all print
+ASMSOURCES = $(wildcard $(SOURCE_DIR)/*.s)
+CSOURCES = $(wildcard $(SOURCE_DIR)/*.c)
+OBJECTS = $(patsubst $(SOURCE_DIR)%,$(BUILD_DIR)%, $(patsubst %.c,%.o, $(patsubst %.s,%.o, $(ASMSOURCES) $(CSOURCES))))
+
+all: $(ISO)
+
+$(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.c
+	$(CC) $(CFLAGS) -I $(INCLUDES) -c $^ -o $@
+
+$(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.s
+	$(AS) $(<) -o $(@)
+
+$(BUILD_DIR)/$(EXECUTABLE): $(OBJECTS)
+	$(LD) -T $(SOURCE_DIR)/linker.ld -o $(BUILD_DIR)/$(EXECUTABLE) $(LFLAGS) $(^) $(LIBS)
+
+$(ISO): $(BUILD_DIR)/$(EXECUTABLE) $(ISO_STAGING)/boot/grub/grub.cfg
+	cp -v $(BUILD_DIR)/$(EXECUTABLE) $(ISO_STAGING)/boot/
+	grub-mkrescue -o $(ISO) $(ISO_STAGING)
+
+clean:
+	rm -fv $(BUILD_DIR)/*.o
+	rm -fv $(BUILD_DIR)/$(EXECUTABLE)
+	rm -fv $(ISO)
+	rm -fv $(ISO_STAGING)/boot/$(EXECUTABLE)
