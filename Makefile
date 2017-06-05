@@ -4,7 +4,7 @@ KERNEL = src/kernel
 
 .PHONY: clean all kernel kernel-clean tags
 
-all: $(ISO)
+all: $(ISO) tags
 
 clean: kernel-clean
 	rm -fv $(ISO)

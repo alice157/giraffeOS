@@ -2,6 +2,24 @@
 
 void draw_giraffe(void)
 {
+	uint8_t * geraffe = "                     .c.\n\
+                   .d$$e$.\n\
+                .e$P\"   ^*%\n\
+             .e$P\"\n\
+           z$$$\"\n\
+        z$$$$$F\n\
+     .d$$$$$$$F\n\
+  .d$$$$$$$$$$F\n\
+.3$$$$$$$$$$$$F\n\
+  $$$$$\" \"\"$*$\"\n\
+   P $\"    $ $\n\
+  d d\"     $ $\n\
+  $ *      $ $\n\
+   ) \'     $ $\n\
+    % \'    $ $\n\
+     % \"   $ $\n\
+      - )  * *\n\
+GiraffeOS";
 	kvga_write_string(geraffe);
 }
 

@@ -1,14 +1,14 @@
 # GiraffeOS
 ## An Experimental Microkernal in C
-Current Status: `It boots, and has a rudimentary vga text-mode driver`
+Current Status: `It boots, and has a rudimentary vga text-mode driver (Now with giraffe ascii art!)`
 
-GiraffeOS is currently under heavy development, and is currently not ready for 
-general use (not that it's intended to be!).
+GiraffeOS is currently under heavy development, and is currently not ready for
+general use (not that it's ever intended to be!).
 
 Todo:
 - [x] Make it boot
 - [x] Basic VGA text support
-- [ ] Giraffe ASCII art on boot
+- [x] Giraffe ASCII art on boot
 - [x] Paging
 - [x] Switch to NASM
 - [x] Improve build tooling to make it easier to include assembly

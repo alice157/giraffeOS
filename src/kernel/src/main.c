@@ -5,5 +5,5 @@
 void kernel_main(void)
 {
 	kvga_init(kvga_color(VGA_COLOR_WHITE, VGA_COLOR_LIGHT_BLUE));
-	kvga_write_string((uint8_t *)"Hello World\0");
+	draw_giraffe();
 }

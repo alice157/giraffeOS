@@ -46,3 +46,4 @@ void kvga_set_color(uint8_t color);
 void kvga_write_character(uint8_t character);
 uint16_t kvga_newline(void);
 uint16_t kvga_tab(void);
+void draw_giraffe();
