@@ -4,10 +4,10 @@ EXECUTABLE = giraffeOS.bin
 ISO = giraffeOS.iso
 CC = i686-elf-gcc
 LD = i686-elf-gcc
-AS = i686-elf-as
+AS = nasm
 LFLAGS = -ffreestanding -O2 -nostdlib -Wall -Wextra
 CFLAGS = -std=gnu99 -ffreestanding -O2 -Wall -Wextra
-AS
+ASFLAGS = -felf32
 INCLUDES = -I include
 LIBS = -lgcc
 
@@ -27,7 +27,7 @@ $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $^ -o $@
 
 $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.s
-	$(AS) $(<) -o $(@)
+	$(AS) $(ASFLAGS) $(<) -o $(@)
 
 $(BUILD_DIR)/$(EXECUTABLE): $(OBJECTS)
 # I know, it actually refers to gcc, but seeing as it's used as the linker in this case,

@@ -1,5 +1,18 @@
 #include "vga.h"
 
+void draw_giraffe(void)
+{
+	kvga_write_string(geraffe);
+}
+
+uint8_t * itoa(int32_t val, int32_t base){
+	static char buf[32] = {0};
+	int i = 30;
+	for(; val && i ; --i, val /= base)
+		buf[i] = "0123456789abcdef"[val % base];
+	return &buf[i+1];
+}
+
 int strlen(uint8_t * string)
 {
 	int count = 0;
@@ -19,6 +32,8 @@ void kvga_write_string(uint8_t * string)
 				kvga_advance_cursor(kvga_newline());
 				break;
 			case '\t':
+				kvga_advance_cursor(kvga_tab());
+				break;
 			default:
 				kvga_buffer[VGA_LOCATION] = kvga_entry(string[i], kvga_current_color);
 				kvga_advance_cursor(1);
@@ -29,7 +44,7 @@ void kvga_write_string(uint8_t * string)
 
 void kvga_init(uint8_t color)
 {
-	kvga_buffer = (uint16_t *)0xB8000;
+	kvga_buffer = (uint16_t *)(KERNEL_LOAD_ADDR + 0xB8000);
 	kvga_clear(color);
 }
 
@@ -103,7 +118,6 @@ uint16_t kvga_newline(void)
 		kvga_buffer[kvga_cursor_y * VGA_WIDTH + (advancement + kvga_cursor_x)] = kvga_entry(' ', kvga_current_color);
 		advancement++;
 	} while ((kvga_cursor_x + advancement) % VGA_WIDTH);
-	kvga_cursor_y = 0;
 	return advancement;
 }
 

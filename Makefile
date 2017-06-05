@@ -2,7 +2,7 @@ ISO = giraffeOS.iso
 ISO_STAGING = dist
 KERNEL = src/kernel
 
-.PHONY: clean all kernel kernel-clean
+.PHONY: clean all kernel kernel-clean tags
 
 all: $(ISO)
 
@@ -18,3 +18,6 @@ kernel $(KERNEL)/build/giraffeOS.bin:
 $(ISO): kernel
 	cp -vf $(KERNEL)/build/giraffeOS.bin $(ISO_STAGING)/boot/
 	grub-mkrescue -o $(ISO) $(ISO_STAGING)
+
+tags:
+	ctags -R .

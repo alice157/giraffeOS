@@ -27,6 +27,7 @@ enum kvga_color {
 	VGA_COLOR_WHITE = 15,
 };
 
+uint8_t * itoa(int32_t val, int32_t base);
 uint16_t * kvga_buffer;
 uint16_t kvga_current_color;
 uint8_t kvga_cursor_x;
@@ -44,3 +45,4 @@ void kvga_set_cursor(uint8_t x, uint8_t y);
 void kvga_set_color(uint8_t color);
 void kvga_write_character(uint8_t character);
 uint16_t kvga_newline(void);
+uint16_t kvga_tab(void);

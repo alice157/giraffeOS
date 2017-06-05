@@ -9,9 +9,9 @@ Todo:
 - [x] Make it boot
 - [x] Basic VGA text support
 - [ ] Giraffe ASCII art on boot
-- [ ] Paging
-- [ ] Switch to NASM
-- [ ] Improve build tooling to make it easier to include assembly
+- [x] Paging
+- [x] Switch to NASM
+- [x] Improve build tooling to make it easier to include assembly
 - [ ] Software and hardware interupts (add a few syscalls)
 - [ ] malloc() and beginnings of memory management (most work is expected to take place here)
 - [ ] Begin keeping track of processes
