@@ -19,11 +19,11 @@ void draw_giraffe(void)
     % \'    $ $\n\
      % \"   $ $\n\
       - )  * *\n\
-GiraffeOS";
+GiraffeOS\n";
 	kvga_write_string(geraffe);
 }
 
-uint8_t * itoa(int32_t val, int32_t base){
+uint8_t * itoa(uint32_t val, uint32_t base){
 	static char buf[32] = {0};
 	int i = 30;
 	for(; val && i ; --i, val /= base)

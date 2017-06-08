@@ -16,12 +16,16 @@ KERNEL_VIRTUAL_BASE equ 0xC0000000
 KERNEL_PAGE_NUMBER equ (KERNEL_PAGE_NUMBER >> 22) ; divides by 1 << 22, 4MB
 
 section .data
-align 0x1000
+align (0x1000)
 BootPageDirectory:
 	dd 0x00000083 ; Identity map first 4MB of physical space
 	times 767 dd 0x00000000 ; Blank out all the other pages
 	dd 0x00000083 ; Map 4MB from 0x00000000 to 0xC0000000 (calculated by page)
-	times 255 dd 0 ; Blank out the remaining pages
+	times 255 dd 0 ; Blank out more pages
+
+align(0x1000)
+PageTables:
+	times (1024 * 1024) dd 0
 
 section .text
 MultiBootHeader:
@@ -32,23 +36,46 @@ MultiBootHeader:
 STACKSIZE equ 0x4000 ;16KB initial stack
 
 _loader:
+
 	mov ecx, (BootPageDirectory - KERNEL_VIRTUAL_BASE) ; set page directory address
 	mov cr3, ecx
+
+	and ecx, 0xFFC00000
+	or ecx, 0x00000003
 
 	mov ecx, cr4
 	or ecx, 0x00000010 ; enable 4MB pages, no page table needed
 	mov cr4, ecx
 
 	mov ecx, cr0
-	or ecx, 0x80000000 ; enable paging
+	or ecx, 0x80000001 ; enable paging
 	mov cr0, ecx
 	lea ecx, [StartInHigherHalf]
 	jmp ecx
 
 StartInHigherHalf:
-	mov dword [BootPageDirectory], 0 ; unmap the first 4MB
-	invlpg [0] ; remove page from cache
+	mov eax, 0
+	mov ebx, (PageTables - KERNEL_VIRTUAL_BASE)
+pd_init_loop:
+	mov ecx, ebx
+	and ecx, 0xFFFFF000
+	or ecx, 0x00000003
+	mov [BootPageDirectory - KERNEL_VIRTUAL_BASE + eax], ecx
+	add eax, 4
+	add ebx, 1024*4
+	cmp eax, 1023*4
+	jne pd_init_loop
 
+mov ebx, [BootPageDirectory - KERNEL_VIRTUAL_BASE + 768]
+mov ecx, [PageTables - KERNEL_VIRTUAL_BASE + 1024 * 4 * 767]
+map_higherhalf_loop:
+	mov [ebx], 
+	jne map_higherhalf_loop
+
+
+	mov dword [BootPageDirectory], 0 ;undo the indentity map, we don't need it anymore
+	invlpg [1023 * 4]
+	invlpg [0] ; remove page from cache
 	mov esp, stack+STACKSIZE
 	push eax ; Multiboot magic number
 	push ebx ; Multiboot info structure (may not be in first 4MB TODO: fix this)

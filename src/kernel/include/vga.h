@@ -1,8 +1,8 @@
+#pragma once
 // lots of this adapted from http://wiki.osdev.org/Bare_Bones
 #include <stdint.h>
 #include <stddef.h>
 #include "util.h"
-#pragma once
 
 
 #define VGA_WIDTH 80
@@ -27,7 +27,7 @@ enum kvga_color {
 	VGA_COLOR_WHITE = 15,
 };
 
-uint8_t * itoa(int32_t val, int32_t base);
+uint8_t * itoa(uint32_t val, uint32_t base);
 uint16_t * kvga_buffer;
 uint16_t kvga_current_color;
 uint8_t kvga_cursor_x;

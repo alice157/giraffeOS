@@ -8,6 +8,7 @@ all: $(ISO) tags
 
 clean: kernel-clean
 	rm -fv $(ISO)
+	rm -fv $(ISO_STAGING)/boot/giraffeOS.bin
 
 kernel-clean:
 	$(MAKE) -C $(KERNEL) clean

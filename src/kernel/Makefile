@@ -7,14 +7,14 @@ CC = i686-elf-gcc
 LD = i686-elf-gcc
 AS = nasm
 LFLAGS = -ffreestanding -O2 -nostdlib -Wall -Wextra
-CFLAGS = -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+CFLAGS = -std=gnu99 -ffreestanding -O2 -Wall -Wextra -Wpointer-sign
 ASFLAGS = -felf32
 INCLUDES = -I include
 LIBS = -lgcc
 
 .PHONY: clean all build-structure
-ASMSOURCES = $(wildcard $(SOURCE_DIR)/**/*.s)
-CSOURCES = $(wildcard $(SOURCE_DIR)/**/*.c)
+ASMSOURCES = $(wildcard $(SOURCE_DIR)/**.s)
+CSOURCES = $(wildcard $(SOURCE_DIR)/**.c)
 
 # Ugly hack, I have no idea how to do this "properly", pull requests welcome!
 # Basically generates a list of all the object files to be made, changing names and paths
@@ -22,12 +22,12 @@ OBJECTS = $(patsubst $(SOURCE_DIR)%,$(BUILD_DIR)%, $(patsubst %.c,%.o, $(patsubs
 
 
 # ------------------------------------------------------------------------------
-all: $(BUILD_DIR)/$(EXECUTABLE)
+all: build-structure $(BUILD_DIR)/$(EXECUTABLE)
 
-$(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.c build_structure
+$(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $^ -o $@
 
-$(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.s build_structure
+$(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.s
 	$(AS) $(ASFLAGS) $(<) -o $(@)
 
 $(BUILD_DIR)/$(EXECUTABLE): $(OBJECTS)
@@ -35,8 +35,7 @@ $(BUILD_DIR)/$(EXECUTABLE): $(OBJECTS)
 # it seemed proper to call it LD for readability's sake.
 	$(LD) -T $(SOURCE_DIR)/linker.ld -o $(BUILD_DIR)/$(EXECUTABLE) $(LFLAGS) $(^) $(LIBS)
 
-build_structure:
-	find $(SOURCE_DIR) -type d -links 2 -exec mkdir -p "$(BUILD_DIR)/{}" \;
-
+build-structure:
+	rsync -a -f"+ */" -f"- *" $(SOURCE_DIR)/ $(BUILD_DIR)/
 clean:
 	rm -rf $(BUILD_DIR)/*

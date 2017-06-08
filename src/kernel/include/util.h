@@ -1,5 +1,6 @@
-#include <stdint.h>
 #pragma once
+#include <stdint.h>
+#include "vga.h"
 
 #define KERNEL_LOAD_ADDR 0xC0000000
 static inline void outb(uint16_t port, uint8_t val)
@@ -23,3 +24,5 @@ static inline uint32_t get_esp(void)
 										: "=a"(esp));
 	return esp;
 }
+
+void memdump(uint32_t * src, uint16_t size);
